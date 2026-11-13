@@ -31,3 +31,4 @@
 ios/Pods
 google-services.json
 GoogleService-Info.plist
+src/app/appEntry.bundle.js

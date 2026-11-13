@@ -35,7 +35,7 @@ isDev = (isDev) || process.env.DEBUG_SCRATCHJR;
 /* eslint-disable import/no-extraneous-dependencies */  // --> OFF
 /* eslint-disable import/no-unresolved  */  // --> OFF
 
-const { app, dialog, BrowserWindow, BrowserView, ipcMain, Menu } = require('electron');  
+const { app, dialog, BrowserWindow, ipcMain, Menu } = require('electron');  
 
 
 
@@ -82,7 +82,7 @@ const SQL = require('sql.js');
 
 
 
-if (require('electron-squirrel-startup')) app.quit(); // eslint-disable-line global-require
+if (process.platform === 'win32' && require('electron-squirrel-startup')) app.quit(); // eslint-disable-line global-require
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -99,20 +99,16 @@ function createWindow() {
       height: 800,
       minHeight: 800,
       minWidth: 1000,
-      customVar: 'elephants',
-      isDebug: DEBUG
+      icon: path.join(__dirname, 'app/assets/icon/icon.png'),
+      webPreferences: {
+        // the renderer (electronClient.js) uses require('electron') directly
+        nodeIntegration: true,
+        contextIsolation: false,
+        sandbox: false
+      }
     });
 
-  const view = new BrowserView({
-    title: 'Scratch Jr',
-    icon: `${__dirname}app/assets/icon/icon.png`,
-    webPreferences: {
-      nodeIntegration: false
-    },
-  });
-
   dataStore = new ScratchJRDataStore(win);
-  win.setBrowserView(view);
 
 
   // and load the index.html of the app.
@@ -446,7 +442,7 @@ ipcMain.on('io_getAudioData', (event, audioName) => {
     return;
   }
 
-  const dataStr = new Buffer(data).toString('base64');
+  const dataStr = Buffer.from(data).toString('base64');
   const extension = path.extname(filePath);
   if (extension === '.mp3') {
     event.returnValue = `data:audio/mp3;base64,${dataStr}`;
@@ -726,7 +722,7 @@ class DatabaseManager {
     /** saves the database to the file specified in this.databaseFilename */
   save() {
     const data = this.db.export();
-    const buffer = new Buffer(data);
+    const buffer = Buffer.from(data);
     fs.writeFileSync(this.databaseFilename, buffer);
   }
 

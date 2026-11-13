@@ -5,23 +5,15 @@
     "description": "ScratchJr Desktop Edition",
     "main": "src/main.js",
     "scripts": {
-        "start": "electron-forge start",
-        "debugMain": "electron-forge start -i",
-        "package": "electron-forge package",
-        "make": "electron-forge make",
-        "make64": "electron-forge make --arch=x64",
-        "make32": "electron-forge make --arch=ia32",
-        "makeAll": "electron-forge make --arch=ia32,x64",
-        "publish": "electron-forge publish",
+        "build": "esbuild src/app/appEntry.js --bundle --format=iife --platform=browser --define:global=window --external:stream --log-override:direct-eval=silent --outfile=src/app/appEntry.bundle.js",
+        "start": "npm run build && electron .",
+        "debugMain": "npm run build && electron --inspect .",
         "lint": "eslint src --color"
     },
     "keywords": [],
     "author": "ScratchJr - Open Source Community Port",
     "license": "MIT",
     "app-copyright": "Copyright (c) 2016, MIT",
-    "config": {
-        "forge": "./forge.config.js"
-    },
     "eslintConfig": {
         "extends": "eslint-config-airbnb",
         "parserOptions": {
@@ -125,11 +117,7 @@
         ]
     },
     "dependencies": {
-        "electron": "^9.0.2",
-        "electron-compile": "^6.4.2",
         "electron-is-dev": "^0.3.0",
-        "electron-squirrel-startup": "^1.0.0",
-        "hoek": "^4.2.1",
         "intl": "^1.2.5",
         "intl-messageformat": "^2.2.0",
         "jszip": "^3.1.5",
@@ -137,16 +125,7 @@
         "sql.js": "^0.4.0"
     },
     "devDependencies": {
-        "babel-plugin-transform-async-to-generator": "^6.24.1",
-        "babel-preset-env": "^1.6.1",
-        "babel-preset-react": "^6.24.1",
-        "electron-builder": "^22.7.0",
-        "electron-forge": "^5.2.4",
-        "electron-prebuilt-compile": "1.8.2-beta.3",
-        "eslint": "^3.19.0",
-        "eslint-config-airbnb": "^15.1.0",
-        "eslint-plugin-import": "^2.11.0",
-        "eslint-plugin-jsx-a11y": "^5.1.1",
-        "eslint-plugin-react": "^7.7.0"
+        "electron": "^45.3.2",
+        "esbuild": "^0.28.2"
     }
 }

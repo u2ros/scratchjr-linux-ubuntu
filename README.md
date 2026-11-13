@@ -67,6 +67,19 @@ Also git (which you may already have).
 * <tt>npm run start</tt>
 
 
+## Running on Linux (modern Electron)
+
+Tested on Debian 13 with Node 25. The prebuilt binary in `out/` does not run on
+current distros (it needs the removed `libgconf-2` and ships without `node_modules`),
+so run from source:
+
+```
+npm install
+node node_modules/electron/install.js   # downloads the Electron binary if npm skipped install scripts
+npm start                                # bundles src/app with esbuild, then launches Electron
+```
+
+
 ## Packaging for Windows / Mac
 
 For windows installers, you must do this from a Windows machine.  Same for Mac.
