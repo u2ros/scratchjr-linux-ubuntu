@@ -71,9 +71,11 @@ Also git (which you may already have).
 
 Tested on Debian 13 with Node 25. The prebuilt binary in `out/` does not run on
 current distros (it needs the removed `libgconf-2` and ships without `node_modules`),
-so run from source:
+so run from source. You need `git` and Node.js (which includes `npm`):
 
 ```
+git clone https://github.com/u2ros/scratchjr-linux-ubuntu.git
+cd scratchjr-linux-ubuntu
 npm install
 node node_modules/electron/install.js   # downloads the Electron binary if npm skipped install scripts
 npm start                                # bundles src/app with esbuild, then launches Electron
